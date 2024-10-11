@@ -38,6 +38,31 @@ pipeline {
 				echo "mvn failsafe:integration-test failsafe:verify" // Fixed typo here
 			}
 		}
+
+		stage('package'){
+			steps{
+				sh "mvn package -DskipTests"
+			}
+		}
+
+		stage('Build Docker Image') {
+			steps {
+				script{
+					dockerImage = docker.build("hrushertz/currency-exchange-devops:${env.BUILD_TAG}")
+				}
+			}
+		}
+
+		stage('Push Docker Image'){
+			steps{
+				script{
+					docker.withRegistry('', Docker''){
+						dockerImage.push();
+						dockerImage.push('latest');
+					}
+				}
+			}
+		}
 	} 
 	
 	post {
