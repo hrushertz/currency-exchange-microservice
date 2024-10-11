@@ -27,12 +27,6 @@ pipeline {
 			}
 		}
 
-		stage('Build (Skip Tests)') {
-			steps {
-				sh "mvn clean install -DskipTests" // Command to skip tests
-			}
-		}
-
 		stage('Test') {
 			steps {
 				sh "mvn test"
