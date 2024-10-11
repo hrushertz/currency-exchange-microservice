@@ -8,7 +8,7 @@ pipeline{
 
 	}
 	stages{
-		stage('Build'){
+		stage('Informative Checkouts'){
 			steps{
 				sh 'mvn --version'
 				sh 'docker version'
@@ -22,15 +22,21 @@ pipeline{
 			}
 		}
 
+		stage('Compile'){
+			steps{
+				sh "mvn clean compile"
+			}
+		}
+
 		stage('Test'){
 			steps{
-				echo "Test"
+				sh "mvn test"
 			}
 		}
 
 		stage('Integration Test'){
 			steps{
-				echo "integration Test"
+				sh "mvn failsafe:intigration-test failsafe:verify"
 			}
 		}
 	} 
